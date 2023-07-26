@@ -1,11 +1,15 @@
 "use client";
+import { useGlobalContext } from "@/app/context/store";
+import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
+import { userItemModel } from "@/interface/list.interface";
 import Image from "next/image";
 import { useState, FormEvent } from "react";
 type eventType = FormEvent<HTMLInputElement>;
 export const Users = () => {
-  const { data, isLoading, error } = useFetch("users");
+  const { data, isLoading } = useFetch("users");
   const [query, setQuery] = useState("");
+  const { addItem, cleanUp } = useGlobalContext();
 
   const onChangeHandler = (e: eventType) => {
     const { value } = e.currentTarget;
@@ -19,10 +23,18 @@ export const Users = () => {
         : item.name.toLowerCase().includes(query);
     });
   };
+  const onCleanUp = () => {
+    cleanUp(Direction.USER);
+  };
 
-  const mapItems = (data: any) => (
+  const mapItems = (data: userItemModel) => (
     <>
-      <li className="listItem py-3" key={data?.id} id={data?.id}>
+      <li
+        className="listItem py-3"
+        key={data?.id + Direction.USER}
+        id={data?.id + Direction.USER}
+        onClick={() => addItem({ ...data, id: data.id + Direction.USER })}
+      >
         <img src={data?.image} alt="Picture of the author" className="image" />
         <div>
           <h4 className="font-medium">{data?.name}</h4>
@@ -45,7 +57,9 @@ export const Users = () => {
       <ul className="list">
         {isLoading ? <p></p> : searchHandler(data)?.map(mapItems)}
       </ul>
-      <button className="btn mt-5">CLEAR LIST</button>
+      <button className="btn mt-5" onClick={onCleanUp}>
+        CLEAR LIST
+      </button>
     </div>
   );
 };

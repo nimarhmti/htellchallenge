@@ -42,3 +42,6 @@ body {
 .email {
   @apply font-extralight text-secondary;
 }
+.chip {
+  @apply bg-primary-light hover:bg-primary cursor-pointer relative m-1 inline-block select-none whitespace-nowrap rounded-lg py-2 px-3.5 align-baseline  text-xs font-bold uppercase leading-none text-white;
+}

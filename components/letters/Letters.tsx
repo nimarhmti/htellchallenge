@@ -1,11 +1,15 @@
 "use client";
+import { useGlobalContext } from "@/app/context/store";
+import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
+import { ItemModel } from "@/interface/list.interface";
 import { UserIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect, FormEvent } from "react";
 type eventType = FormEvent<HTMLInputElement>;
 export const Letters = () => {
   const [query, setQuery] = useState("");
   const { data, isLoading } = useFetch("letters");
+  const { addItem, cleanUp } = useGlobalContext();
 
   const onChangeHandler = (e: eventType) => {
     const { value } = e.currentTarget;
@@ -19,9 +23,19 @@ export const Letters = () => {
         : item.name.toLowerCase().includes(query);
     });
   };
-  const mapItems = (data: any) => (
+
+  const onCleanUp = () => {
+    cleanUp(Direction.LETTERS);
+  };
+
+  const mapItems = (data: ItemModel) => (
     <>
-      <li className="listItem py-3" key={data?.id} id={data?.id}>
+      <li
+        className="listItem py-3"
+        key={data?.id + Direction.LETTERS}
+        id={data?.id + Direction.LETTERS}
+        onClick={() => addItem({ ...data, id: data.id + Direction.LETTERS })}
+      >
         <img
           src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
           alt="Picture of the author"
@@ -48,7 +62,9 @@ export const Letters = () => {
       <ul className="list">
         {isLoading ? <p></p> : searchHandler(data)?.map(mapItems)}
       </ul>
-      <button className="btn mt-5">CLEAR LIST</button>
+      <button className="btn mt-5" onClick={onCleanUp}>
+        CLEAR LIST
+      </button>
     </div>
   );
 };
