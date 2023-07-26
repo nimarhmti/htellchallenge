@@ -15,13 +15,11 @@ interface contextProps {
   data: dataType[] | [];
   addItem: (item: dataType) => void;
   removeItem: (id: string) => void;
-  cleanUp: (sectionId: string) => void;
 }
 const GlobalContext = createContext<contextProps>({
   data: [],
   addItem: () => null,
   removeItem: () => null,
-  cleanUp: () => null,
 });
 
 export const GlobalContextProvider = ({ children }: any) => {
@@ -40,11 +38,8 @@ export const GlobalContextProvider = ({ children }: any) => {
       return oldValues.filter((item) => item.id !== id);
     });
   };
-  //clean up related items
-  const cleanUp = (id: string) => {
-    setData((items) => items.filter((item) => !item.id.includes(id)));
-  };
-  const value = { data, addItem, removeItem, cleanUp };
+
+  const value = { data, addItem, removeItem };
   return (
     <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
   );

@@ -2,32 +2,30 @@
 import { useGlobalContext } from "@/app/context/store";
 import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
-import { ItemModel, userItemModel } from "@/interface/list.interface";
+import {
+  ItemModel,
+  eventType,
+  userItemModel,
+  userListModel,
+} from "@/interface/list.interface";
+import { searchByName } from "@/utils/Search";
 import Image from "next/image";
-import { useState, FormEvent } from "react";
-type eventType = FormEvent<HTMLInputElement>;
+import { useState, FormEvent, useEffect } from "react";
 export const Users = () => {
   const { data, isLoading } = useFetch("users");
+  const [list, setList] = useState<userListModel>([]);
   const [query, setQuery] = useState("");
-  const { addItem, cleanUp } = useGlobalContext();
+  const { addItem } = useGlobalContext();
+  useEffect(() => {
+    setList(data);
+  }, [data]);
 
   const onChangeHandler = (e: eventType) => {
     const { value } = e.currentTarget;
     setQuery(value);
   };
 
-  const searchHandler = (list: []) => {
-    return list?.filter((item: ItemModel) => {
-      return query.toLowerCase() === ""
-        ? item
-        : item.name.toLowerCase().includes(query);
-    });
-  };
-  const onCleanUp = () => {
-    cleanUp(Direction.USER);
-  };
-
-  const mapItems = (data: userItemModel) => (
+  const mapItems = (data: ItemModel) => (
     <div key={data.id}>
       <li
         className="listItem py-3"
@@ -54,9 +52,9 @@ export const Users = () => {
         onChange={onChangeHandler}
       />
       <ul className="list">
-        {isLoading ? <p></p> : searchHandler(data)?.map(mapItems)}
+        {isLoading ? <p></p> : searchByName(list, query)?.map(mapItems)}
       </ul>
-      <button className="btn mt-5" onClick={onCleanUp}>
+      <button className="btn mt-5" onClick={() => setList([])}>
         CLEAR LIST
       </button>
     </div>

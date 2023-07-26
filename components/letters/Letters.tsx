@@ -1,31 +1,27 @@
 "use client";
+import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "@/app/context/store";
 import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
-import { ItemModel } from "@/interface/list.interface";
-import { UserIcon } from "@heroicons/react/24/solid";
-import React, { useState, useEffect, FormEvent } from "react";
-type eventType = FormEvent<HTMLInputElement>;
+import {
+  ItemModel,
+  eventType,
+  letterListModel,
+} from "@/interface/list.interface";
+import { searchByName } from "@/utils/Search";
+
 export const Letters = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [list, setList] = useState<letterListModel>([]);
   const { data, isLoading } = useFetch("letters");
-  const { addItem, cleanUp } = useGlobalContext();
+  const { addItem } = useGlobalContext();
+  useEffect(() => {
+    setList(data);
+  }, [data]);
 
   const onChangeHandler = (e: eventType) => {
     const { value } = e.currentTarget;
     setQuery(value);
-  };
-
-  const searchHandler = (list: []) => {
-    return list?.filter((item: ItemModel) => {
-      return query.toLowerCase() === ""
-        ? item
-        : item.name.toLowerCase().includes(query);
-    });
-  };
-
-  const onCleanUp = () => {
-    cleanUp(Direction.LETTERS);
   };
 
   const mapItems = (data: ItemModel) => (
@@ -60,9 +56,9 @@ export const Letters = () => {
         onChange={onChangeHandler}
       />
       <ul className="list">
-        {isLoading ? <p></p> : searchHandler(data)?.map(mapItems)}
+        {isLoading ? <p></p> : searchByName(list, query)?.map(mapItems)}
       </ul>
-      <button className="btn mt-5" onClick={onCleanUp}>
+      <button className="btn mt-5" onClick={() => setList([])}>
         CLEAR LIST
       </button>
     </div>
