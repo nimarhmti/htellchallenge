@@ -2,7 +2,7 @@
 import { useGlobalContext } from "@/app/context/store";
 import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
-import { userItemModel } from "@/interface/list.interface";
+import { ItemModel, userItemModel } from "@/interface/list.interface";
 import Image from "next/image";
 import { useState, FormEvent } from "react";
 type eventType = FormEvent<HTMLInputElement>;
@@ -17,7 +17,7 @@ export const Users = () => {
   };
 
   const searchHandler = (list: []) => {
-    return list?.filter((item: any) => {
+    return list?.filter((item: ItemModel) => {
       return query.toLowerCase() === ""
         ? item
         : item.name.toLowerCase().includes(query);
@@ -28,10 +28,9 @@ export const Users = () => {
   };
 
   const mapItems = (data: userItemModel) => (
-    <>
+    <div key={data.id}>
       <li
         className="listItem py-3"
-        key={data?.id + Direction.USER}
         id={data?.id + Direction.USER}
         onClick={() => addItem({ ...data, id: data.id + Direction.USER })}
       >
@@ -42,7 +41,7 @@ export const Users = () => {
         </div>
       </li>
       <hr className="divider" />
-    </>
+    </div>
   );
 
   return (

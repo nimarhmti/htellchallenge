@@ -1,6 +1,6 @@
 export interface ItemModel {
   name: string;
-  detail: string;
+  detail?: string;
   id: string;
 }
 

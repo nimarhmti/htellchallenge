@@ -17,7 +17,7 @@ export const Letters = () => {
   };
 
   const searchHandler = (list: []) => {
-    return list?.filter((item: any) => {
+    return list?.filter((item: ItemModel) => {
       return query.toLowerCase() === ""
         ? item
         : item.name.toLowerCase().includes(query);
@@ -29,7 +29,7 @@ export const Letters = () => {
   };
 
   const mapItems = (data: ItemModel) => (
-    <>
+    <div key={data.id}>
       <li
         className="listItem py-3"
         key={data?.id + Direction.LETTERS}
@@ -47,7 +47,7 @@ export const Letters = () => {
         </div>
       </li>
       <hr className="divider" />
-    </>
+    </div>
   );
 
   return (
