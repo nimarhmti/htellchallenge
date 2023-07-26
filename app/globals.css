@@ -3,25 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background-HEX: #808080;
+  --font-color--rgba: rgba(0, 0, 0, 0.87);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-family: "Wix Madefor Display", sans-serif;
+  background-color: var(--background-HEX);
+  color: var(--font-color--rgba);
+}
+
+.card {
+  @apply bg-white flex  w-1/3 my-3 h-full p-3 rounded-sm;
+}
+
+.textField {
+  @apply bg-white w-full h-16 border-[1px] outline-none rounded-sm border-slate-300 hover:border-slate-600 px-2 hover:outline-none focus:outline-none focus:ring focus:ring-blue-400 focus:border-[1px];
+}
+
+.btn {
+  @apply w-full rounded-md shadow-lg bg-primary-light text-white h-11 hover:bg-primary transition-all mt-auto;
+}
+.image {
+  @apply rounded-full w-12 h-12;
+}
+.list {
+  @apply basis-10/12 pl-4 py-5 overflow-y-scroll cursor-pointer;
+}
+
+.listItem {
+  @apply flex gap-4 items-start;
+}
+.divider {
+  @apply border-[1px] my-0 mr-0 ml-14;
+}
+.email {
+  @apply font-extralight text-secondary;
 }
