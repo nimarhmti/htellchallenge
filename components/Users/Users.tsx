@@ -1,6 +1,4 @@
 "use client";
-import { useGlobalContext } from "@/app/context/store";
-import { Direction } from "@/enums/enum";
 import { useFetch } from "@/hooks/useFetch";
 import {
   ItemModel,
@@ -11,11 +9,12 @@ import {
 import { searchByName } from "@/utils/Search";
 import Image from "next/image";
 import { useState, FormEvent, useEffect } from "react";
+import { UserItem } from "./UserItem";
 export const Users = () => {
   const { data, isLoading } = useFetch("users");
   const [list, setList] = useState<userListModel>([]);
   const [query, setQuery] = useState("");
-  const { addItem } = useGlobalContext();
+
   useEffect(() => {
     setList(data);
   }, [data]);
@@ -25,22 +24,7 @@ export const Users = () => {
     setQuery(value);
   };
 
-  const mapItems = (data: ItemModel) => (
-    <div key={data.id}>
-      <li
-        className="listItem py-3"
-        id={data?.id + Direction.USER}
-        onClick={() => addItem({ ...data, id: data.id + Direction.USER })}
-      >
-        <img src={data?.image} alt="Picture of the author" className="image" />
-        <div>
-          <h4 className="font-medium">{data?.name}</h4>
-          <p className="email">{data?.detail}</p>
-        </div>
-      </li>
-      <hr className="divider" />
-    </div>
-  );
+  const mapItems = (data: ItemModel) => <UserItem {...data} />;
 
   return (
     <div className="card flex-col gap-4">
