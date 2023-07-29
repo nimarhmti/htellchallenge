@@ -1,6 +1,7 @@
 import { useGlobalContext } from "@/app/context/store";
 import { Direction } from "@/enums/enum";
 import { ItemModel } from "@/interface/list.interface";
+import { idGenerator } from "@/utils/IdGenerator";
 import React from "react";
 
 export const LetterItem = (props: ItemModel) => {
@@ -9,8 +10,8 @@ export const LetterItem = (props: ItemModel) => {
     <div key={props.id}>
       <li
         className="listItem py-3"
-        key={props?.id + Direction.LETTERS}
-        id={props?.id + Direction.LETTERS}
+        key={idGenerator(props.id, Direction.LETTERS)}
+        id={idGenerator(props.id, Direction.LETTERS)}
         onClick={() => addItem({ ...props, id: props.id + Direction.LETTERS })}
       >
         <img
