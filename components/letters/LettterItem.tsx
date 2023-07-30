@@ -12,7 +12,9 @@ export const LetterItem = (props: ItemModel) => {
         className="listItem py-3"
         key={idGenerator(props.id, Direction.LETTERS)}
         id={idGenerator(props.id, Direction.LETTERS)}
-        onClick={() => addItem({ ...props, id: props.id + Direction.LETTERS })}
+        onClick={() =>
+          addItem({ ...props, id: idGenerator(props.id, Direction.LETTERS) })
+        }
       >
         <img
           src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"

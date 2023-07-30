@@ -12,7 +12,9 @@ export const UserItem = (props: ItemModel) => {
         className="listItem py-3"
         key={idGenerator(props.id, Direction.USER)}
         id={idGenerator(props.id, Direction.USER)}
-        onClick={() => addItem({ ...props, id: props.id + Direction.LETTERS })}
+        onClick={() =>
+          addItem({ ...props, id: idGenerator(props.id, Direction.USER) })
+        }
       >
         <img src={props.image} alt="Picture of the author" className="image" />
         <div>
